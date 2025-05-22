@@ -16,10 +16,26 @@ Laravel Magic Test was created by [Mateus Guimarães](https://twitter.com/mateus
 
 ## Installation
 
+Add this to consuming composer.json:
+
+```json
+"repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/MatticusPrime29/magic-test-laravel.git"
+        }
+    ],
+```
+
 You can install the package via composer:
 
 ```bash
-composer require bk-ty/magic-test-laravel --dev
+ composer require matticusprime29/magic-test-laravel:dev-master --dev
+```
+
+To get chromedriver, and to setup dusk boilerplate:
+```bash
+php artisan dusk: install
 ```
 
 ## Usage
@@ -27,13 +43,19 @@ composer require bk-ty/magic-test-laravel --dev
 On your Laravel Dusk tests, simply add `magic()` at the end of your method chain. For example:
 
 ```php
-    public function testBasicExample()
-    {
-        $this->browse(function (Browser $browser) {
-            $browser->visit('/')
-                    ->magic();
-        });
-    }
+test('basic example', function () {
+    $this->browse(function (Browser $browser) {
+
+        $browser->visit('/')
+            ->magic();
+    });
+});
+```
+
+## Recording Actions
+
+```bash
+php artisan dusk:serve --browse
 ```
 
 ### Running Tests
@@ -44,11 +66,6 @@ php artisan dusk:serve
 
 This will start a `artisan serve` process in the background to execute your tests.
 
-## Recording Actions
-
-```bash
-php artisan dusk:serve --browse
-```
 
 Behind the scenes, it is the same as running `php artisan dusk`, but it will maintain the browser window open. Within this browser, you can start configuring your tests using the `magic()` helper method.
 
