@@ -83,8 +83,11 @@ class GrammarBuilderVisitor extends NodeVisitorAbstract
         return array_map(fn($argument) => new Arg($argument), $arguments);
     }
 
-    public function getPreviousMethodInChain(Node $node): Expr
+    public function getPreviousMethodInChain(Node $node): ?Expr
     {
-        return $node->getAttribute('parent')->var;
+        if ($node instanceof MethodCall) {
+            return $node->var;
+        }
+        return null;
     }
 }
