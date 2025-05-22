@@ -33,10 +33,26 @@ You can install the package via composer:
  composer require matticusprime29/magic-test-laravel:dev-master --dev
 ```
 
+Important: use `--dev` b/c you don't want this available on production.
+
+## Setup
+
 To get chromedriver, and to setup dusk boilerplate:
 ```bash
 php artisan dusk: install
 ```
+
+Create a `.env.dusk` file at the root of your project, and add:
+
+```dotenv
+MAGIC_TEST=true
+APP_URL=YOUR_APP_URL_FOR_LOCAL_DEVELOPMENT
+DB_DATABASE=YOUR_TESTING_DB
+DB_USERNAME=TESTING_DB_USER
+DB_PASSWORD=TESTING_DB_PASS
+```
+
+You essentially want to copy whatever .env.testing file you have into .env.dusk
 
 ## Usage
 
