@@ -16,21 +16,10 @@ Laravel Magic Test was created by [Mateus Guimarães](https://twitter.com/mateus
 
 ## Installation
 
-Add this to consuming composer.json:
-
-```json
-"repositories": [
-        {
-            "type": "vcs",
-            "url": "https://github.com/MatticusPrime29/magic-test-laravel.git"
-        }
-    ],
-```
-
 You can install the package via composer:
 
 ```bash
- composer require matticusprime29/magic-test-laravel:dev-master --dev
+ composer require bk-ty/magic-test-laravel --dev
 ```
 
 Important: use `--dev` b/c you don't want this available on production.
@@ -86,6 +75,26 @@ This will start a `artisan serve` process in the background to execute your test
 Behind the scenes, it is the same as running `php artisan dusk`, but it will maintain the browser window open. Within this browser, you can start configuring your tests using the `magic()` helper method.
 
 Once the browser is open, Magic Test will already be capturing all of your actions. You can click around, fill inputs, checkboxes, selects and radios just like you would do manually testing an application.
+
+
+## Working With Filament
+When navigating to different pages, it's important that the MagicTest js object in injected into the page.
+To make sure this happens, add this code to your AdminPanelProvider:
+```php
+use MagicTest\MagicTest\MagicTest;
+
+if (env('MAGIC_TEST', false)) {
+    FilamentView::registerRenderHook(
+        'panels::body.end',
+        function () {
+            if (method_exists(MagicTest::class, 'scripts')) {
+                return new HtmlString(MagicTest::scripts());
+            }
+            return '';
+        }
+    );
+}
+```
 
 ## Generating Assertions
 
