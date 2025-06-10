@@ -26,17 +26,23 @@ class Attribute
 
     public function buildSelector($element = 'input', $forceInputSyntax = false): string
     {
+        $escapedValue = str_replace(".", "\.", str_replace("'", "\\", $this->value));
+
+
         return [
             'wire:model' => $this->buildLivewireSelector($element),
-            'dusk' => "@{$this->value}",
-            'name' => $forceInputSyntax ? $this->buildFullSelector($element) : $this->value,
-            'id' => $forceInputSyntax ? $this->buildFullSelector($element) : "#{$this->value}",
+            'dusk' => "@{$escapedValue}",
+            'name' => $forceInputSyntax ? $this->buildFullSelector($element) : $escapedValue,
+            'id' => $forceInputSyntax ? $this->buildFullSelector($element) : "#{$escapedValue}",
         ][$this->name] ?? $this->buildFullSelector($element);
     }
 
     public function buildFullSelector(string $element): string
     {
-        return "{$element}[{$this->name}={$this->value}]";
+        $escapedValue = str_replace("'", "\\", $this->value);
+
+
+        return "{$element}[{$this->name}={$escapedValue}]";
     }
 
     public function buildLivewireSelector(string $element): string
